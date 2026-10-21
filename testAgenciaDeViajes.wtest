@@ -1,0 +1,26 @@
+import agenciaDeViajes.*
+
+describe "1. Calcular el valor final de un pack" {
+  test "Un pack nacional sin beneficios vigentes devuelve el mismo precio base." {
+    const coordinador1 = new Coordinador(rol=guia,cantViajes=1,estaMotivado=true,aniosExperiencia=1)
+    const packnacional1 = new PackNacionales(dias=1,precioBase=10, coordinador=coordinador1,provinciaDestino="Santa Fe") 
+
+    assert.equals(10, packnacional1.valorFinal())
+  }
+  test "Un pack nacional con 2 beneficios vigentes suma correctamente sus costos al precio base." {
+    const coordinador1 = new Coordinador(rol=guia,cantViajes=1,estaMotivado=true,aniosExperiencia=1)
+    const packnacional1 = new PackNacionales(dias=1,precioBase=10, coordinador=coordinador1,provinciaDestino="Santa Fe") 
+    const beneficio1 = new Beneficios(tipo="Comida Gratis", estaVigente=true,costo=10)
+    const beneficio2 =new Beneficios(tipo="Bebida Gratis", estaVigente=false,costo=5)
+    packnacional1.agregarBeneficio(beneficio1)
+    packnacional1.agregarBeneficio(beneficio2)
+
+    assert.equals(20, packnacional1.valorFinal())
+  }
+  test "Un pack internacional sin beneficios vigentes calcula correctamente el total con el 20% de recargo." {
+    const coordinador1 = new Coordinador(rol=guia,cantViajes=1,estaMotivado=true,aniosExperiencia=1)
+    const packinternacional1 = new PackInternacionales(dias=1,precioBase=10, coordinador=coordinador1,paisDestino="Colombia",cantEscalas=1,esDeInteres=true) 
+
+    assert.equals(12,packinternacional1.valorFinal())
+  }
+}
